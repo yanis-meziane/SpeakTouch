@@ -1,6 +1,19 @@
-# Getting Started with Create React App
+# How to use Github
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+   1. When you want to push your modifications
+
+        * git status
+        * git add .
+        * git commit -m "Your commits"
+        * git push origin main
+
+    2. When you want to pull 
+
+        * git status 
+        * git add * 
+        * git pull origin main 
+
+
 
 ## Available Scripts
 

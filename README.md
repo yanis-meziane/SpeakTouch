@@ -7,7 +7,7 @@
         * git commit -m "Your commits"
         * git push origin main
 
-    2. When you want to pull 
+ 2. When you want to pull 
 
         * git status 
         * git add * 

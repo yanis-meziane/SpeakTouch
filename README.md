@@ -9,76 +9,157 @@
 
  2. When you want to pull 
 
-        * git status 
-        * git add * 
-        * git pull origin main 
+ * git status 
+ * git add * 
+ * git pull origin main
+ * npm install ( In order have node modules )
 
 
 
-## Available Scripts
+# Tap to Talk
 
-In the project directory, you can run:
+_A gesture-based communication app for nonverbal users_
 
-### `npm start`
+## 🧩 Project Scope
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🎯 Specific
+- Develop a communication tool for nonverbal users experiencing speech difficulties.
+- Create a basic prototype with a simple mobile interface that translates **three touch gestures** into **haptic feedback** and **audio outputs**.
+- Test the prototype with at least one user before the end of a 4-week development cycle.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 📏 Measurable
+- The app consists of a **single-page interface**.
+- Users perform simple gestures (swipes and taps) which trigger both:
+  - **Push-up notifications**
+  - **Text-to-Speech (TTS)** audio output
+- Three distinct gestures map to three specific messages with unique haptic and audio feedback.
 
-### `npm test`
+### 🗓️ Time-related
+- A functional prototype will be completed and tested within **4 weeks**.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🗣️ What is Tap to Talk?
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Tap to Talk** is a mobile application designed to help nonverbal individuals communicate using touch gestures. It’s designed to be:
+- Simple
+- Fast
+- Accessible
+- Non-visual
+- Voice-free
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 💡 Inspiration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This project was inspired by a deeply personal story. Ana, one of the contributors, witnessed her grandmother lose her ability to speak late in life. Though fully aware, she couldn’t communicate her needs — a painful and frustrating experience for both of them. This app is a tribute to that struggle — giving others in similar situations a tool to express themselves without speaking.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ❗ The Problem
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Millions live without the ability to speak, including:
+- Elderly individuals
+- Autistic children
+- Post-operative patients
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Current communication apps are often:
+- Too complex
+- Visually cluttered
+- Expensive
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+There’s a need for a **low-barrier, intuitive, and affordable** tool.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ✅ The Solution
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Tap to Talk** allows users to perform simple gestures that immediately trigger speech output. For example:
 
-### Code Splitting
+- **Swipe right** → “I’m hungry”
+- **Swipe left** → “Bathroom”
+- **Double tap** → “Thank you”
+- **Two-finger hold** → “I need help”
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Each gesture results in:
+- Haptic feedback
+- TTS audio output
 
-### Analyzing the Bundle Size
+No typing. No visuals. Just simple, human interaction.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 👥 Target Users & Customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Target Users
+- Elderly individuals with speech loss
+- Autistic children with communication challenges
+- Surgery recovery patients
 
-### Advanced Configuration
+### Customizable UI
+- Colorful and fun for kids
+- Clean and bold for seniors
+- Focused for clinical use
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🔍 Feature Overview
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- 👆 Gesture input (swipes, taps, holds)
+- 🗣️ Predefined message-to-gesture mapping
+- 🔊 TTS integration
+- 📴 Offline support
+- 🤖 (Future) AI-based phrase suggestions
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# SpeakTouch
+## ⚙️ Technical Feasibility
+
+- Built with **React** / **AI** and **MongoDB**
+- Gesture handling with **native touch events**
+- Speech synthesis using **Google TTS** or **pyttsx3**
+- Rule-based logic, **no ML required**
+- Functional MVP ready in **under 6 weeks**
+
+---
+
+## 💼 Business Model
+
+- **Freemium**
+  - Free: Core gestures and common phrases
+    
+---
+
+## 📚 Course Integration
+
+- **Digital Ecosystems**: Inclusive tech for real users
+- **AI**: GPT-powered suggestions (future)
+- **Business Intelligence**: Gesture and usage tracking
+- **Project Management**: Defined scope, MVP plan
+
+---
+
+## 🛠️ Tools & Tech Stack
+
+- **Project Management**: Notion
+- **Documentation**: Google Docs
+- **Design**: Figma
+- **Communication**: Discord
+- **Version Control**: GitHub
+
+### Development
+- **React**, **CSS**
+- **MongoDB**
+
+---
+
+## 👨‍💻 Contributors
+
+- Yanis  
+- Ana  
+- Miguelle  
+- Simon  
+
+---
+
+## 🙏 Conclusion
+
+> *“Tap to Talk is more than just an app — it’s about restoring dignity, independence, and human connection. It gives a voice to those who can’t speak — and that’s something everyone deserves.”*

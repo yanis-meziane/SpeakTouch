@@ -113,6 +113,9 @@ export default function App() {
             <span className="text-xl font-bold">Tap to Talk</span>
           </div>
           <div className="hidden md:flex items-center space-x-6 text-gray-600">
+          <a href="#settings" className="hover:text-indigo-600 transition">
+              Settings
+            </a>
             <a href="#features" className="hover:text-indigo-600 transition">
               Features
             </a>
@@ -127,6 +130,13 @@ export default function App() {
               className="hover:text-indigo-600 transition"
             >
               Testimonials
+            </a>
+
+            <a
+              href="#about"
+              className="hover:text-indigo-600 transition"
+            >
+              About Us
             </a>
             <a
               href="#cta"

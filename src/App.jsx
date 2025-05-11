@@ -165,7 +165,7 @@ export default function App() {
               href="#cta"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
-              Get Started
+              Get a demo
             </a>
             <a
               href="#how-it-works"

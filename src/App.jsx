@@ -96,7 +96,7 @@ export default function App() {
     },
     {
       quote:
-        "After my stroke, I couldn't speak clearly. Tap to Talk helped me communicate basic needs to my caregivers.",
+        "After my stroke, I couldn't speak clearly. SpeakTouch helped me communicate basic needs to my caregivers.",
       author: "Robert J.",
       role: "User",
     },

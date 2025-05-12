@@ -15,9 +15,11 @@ import {
   User,
   GripHorizontal,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
 
 export default function App() {
-  const [scrolled, setScrolled] = useState(false);
+  const [setScrolled] = useState(false);
   const [activeGesture, setActiveGesture] = useState(null);
 
   useEffect(() => {
@@ -102,56 +104,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
       {/* Navbar */}
-      <nav
-        className={`fixed w-full z-10 transition-all duration-300 ${
-          scrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
-        }`}
-      >
-        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-indigo-600">
-            <Hand className="h-7 w-7" />
-            <span className="text-xl font-bold">Tap to Talk</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-6 text-gray-600">
-          <a href="#settings" className="hover:text-indigo-600 transition">
-              Settings
-            </a>
-            <a href="#features" className="hover:text-indigo-600 transition">
-              Features
-            </a>
-            <a
-              href="#how-it-works"
-              className="hover:text-indigo-600 transition"
-            >
-              How It Works
-            </a>
-            <a
-              href="#testimonials"
-              className="hover:text-indigo-600 transition"
-            >
-              Testimonials
-            </a>
-
-            <a
-              href="#about"
-              className="hover:text-indigo-600 transition"
-            >
-              About Us
-            </a>
-            <a
-              href="#cta"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-full transition flex items-center space-x-1"
-            >
-              <span>Try Now</span>
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
-          <button className="md:hidden text-gray-600">
-            <GripHorizontal className="h-6 w-6" />
-          </button>
-        </div>
-      </nav>
-
+      <Navbar />
       {/* Hero Section */}
       <header className="min-h-screen px-4 md:px-6 text-center flex items-center">
         <div className="container mx-auto max-w-4xl mt-10">
@@ -172,7 +125,7 @@ export default function App() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="#cta"
+              href="/communication"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
               Get a demo
@@ -198,7 +151,7 @@ export default function App() {
                     Communication Made Simple
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    Tap to Talk helps users express their needs and thoughts
+                    Speak Touch helps users express their needs and thoughts
                     through intuitive gestures, eliminating communication
                     barriers for:
                   </p>
@@ -253,7 +206,7 @@ export default function App() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Tap to Talk?
+              Why Choose SpeakTouch?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Designed with simplicity and accessibility at its core, our app
@@ -288,7 +241,7 @@ export default function App() {
               How It Works
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Communicating with Tap to Talk is intuitive and straightforward.
+              Communicating with SpeakTouch is intuitive and straightforward.
               Simple gestures trigger voice responses instantly.
             </p>
           </div>
@@ -344,10 +297,10 @@ export default function App() {
 
           <div className="mt-12 text-center">
             <a
-              href="#features"
+              href="/communication"
               className="inline-flex items-center text-indigo-600 font-medium hover:text-indigo-800 transition"
             >
-              <span>See all available gestures</span>
+              <span>Try our demo</span>
               <ArrowRight className="h-4 w-4 ml-1" />
             </a>
           </div>
@@ -401,7 +354,7 @@ export default function App() {
       {/* CTA Section */}
       <section id="cta" className="py-20 bg-indigo-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Try Tap to Talk?</h2>
+          <h2 className="text-3xl font-bold mb-6">Ready to Try SpeakTouch?</h2>
           <p className="text-xl text-indigo-100 max-w-2xl mx-auto mb-10">
             Join thousands of users who have found a new way to express
             themselves. Start communicating more effectively today.
@@ -428,15 +381,15 @@ export default function App() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 text-indigo-600 mb-6 md:mb-0">
-              <Hand className="h-6 w-6" />
-              <span className="text-lg font-bold">Tap to Talk</span>
+              <Zap className="h-6 w-6" />
+              <span className="text-lg font-bold">SpeakTouch</span>
             </div>
 
             <div className="flex space-x-6 text-gray-500 mb-6 md:mb-0">
-              <a href="#" className="hover:text-indigo-600 transition">
+              <a href="/privacy" className="hover:text-indigo-600 transition">
                 Privacy
               </a>
-              <a href="#" className="hover:text-indigo-600 transition">
+              <a href="/terms" className="hover:text-indigo-600 transition">
                 Terms
               </a>
               <a href="#" className="hover:text-indigo-600 transition">
@@ -451,12 +404,7 @@ export default function App() {
               >
                 <Settings className="h-5 w-5" />
               </a>
-              <a
-                href="#"
-                className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full text-gray-600 transition"
-              >
-                <Moon className="h-5 w-5" />
-              </a>
+
               <a
                 href="#"
                 className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full text-gray-600 transition"

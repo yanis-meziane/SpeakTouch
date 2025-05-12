@@ -138,7 +138,7 @@ export default function SpeakTouchKids() {
             </span>
           </div>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Understand your children{" "}
+            Understand Your Children{" "}
             <span className="text-indigo-600">Clearly</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">

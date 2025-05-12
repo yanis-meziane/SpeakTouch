@@ -31,7 +31,7 @@ export default function Navbar() {
           <a href="#features" className="hover:text-indigo-600 transition">
             Features
           </a>
-          <a href="#how-it-works" className="hover:text-indigo-600 transition">
+          <a href="/" className="hover:text-indigo-600 transition">
             How It Works
           </a>
           <a href="/kids" className="hover:text-indigo-600 transition">

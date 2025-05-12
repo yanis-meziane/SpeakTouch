@@ -103,7 +103,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white scroll-smooth">
       {/* Navbar */}
       <Navbar />
       {/* Hero Section */}

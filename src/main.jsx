@@ -8,6 +8,7 @@ import Terms from "./terms";
 import Signup from "./signup";
 import Login from "./login";
 import SpeakTouchKids from "./kids";
+import ResetPassword from "./reset";
 
 import "./index.css";
 
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/kids" element={<SpeakTouchKids />} />
+        <Route path="/reset" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

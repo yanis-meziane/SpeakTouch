@@ -74,14 +74,14 @@ export default function App() {
       color: "bg-blue-500",
     },
     {
-      id: "double-tap",
-      name: "Double Tap",
+      id: "swipe-up",
+      name: "Swipe Up",
       action: "Thank you",
       color: "bg-green-500",
     },
     {
-      id: "two-finger",
-      name: "Two-finger Hold",
+      id: "swipe-down",
+      name: "Swipe Down",
       action: "I need help",
       color: "bg-red-500",
     },

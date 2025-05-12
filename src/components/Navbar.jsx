@@ -34,8 +34,8 @@ export default function Navbar() {
           <a href="#how-it-works" className="hover:text-indigo-600 transition">
             How It Works
           </a>
-          <a href="#testimonials" className="hover:text-indigo-600 transition">
-            Testimonials
+          <a href="/kids" className="hover:text-indigo-600 transition">
+            SpeakTouch Kids
           </a>
           <a href="#about" className="hover:text-indigo-600 transition">
             About Us

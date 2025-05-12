@@ -116,11 +116,8 @@ export default function Signup() {
           hashedPassword: hashedPassword,
         };
 
-        // Here you would typically send the data to your backend
+        // REQUEST TO BACKEND FOR SIGNUP
         console.log("Submission Data:", submissionData);
-
-        // Reset form or redirect
-        alert("Signup Successful!");
       } catch (error) {
         console.error("Signup error:", error);
         alert("Signup failed. Please try again.");

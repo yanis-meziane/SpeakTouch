@@ -42,14 +42,8 @@ export default function Login() {
 
     if (validateForm()) {
       try {
-        // Here you would typically:
-        // 1. Send login request to backend
-        // 2. Validate credentials
-        // 3. Handle successful login (redirect, set auth token, etc.)
+        // REQUEST TO BACKEND FOR LOGIN
         console.log("Login attempt:", formData.email);
-
-        // Simulated login success
-        alert("Login Successful!");
       } catch (error) {
         console.error("Login error:", error);
         alert("Login failed. Please check your credentials.");

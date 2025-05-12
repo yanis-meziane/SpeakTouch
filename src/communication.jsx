@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 export default function CommunicationPage() {
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
@@ -255,42 +256,7 @@ export default function CommunicationPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white py-6 px-4 md:px-6">
-        <div className="container mx-auto max-w-4xl">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center space-x-2 mb-2">
-                <Zap className="h-5 w-5 text-indigo-600" />
-                <span className="font-bold text-gray-900">SpeakTouch</span>
-              </div>
-              <p className="text-sm text-gray-500">
-                Express yourself without words
-              </p>
-            </div>
-
-            <div className="flex space-x-4">
-              <a
-                href="#demo"
-                className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
-              >
-                Get Demo
-              </a>
-              <a
-                href="#how-it-works"
-                className="text-gray-700 hover:text-gray-900 font-medium text-sm"
-              >
-                How It Works
-              </a>
-              <a
-                href="#support"
-                className="text-gray-700 hover:text-gray-900 font-medium text-sm"
-              >
-                Support
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

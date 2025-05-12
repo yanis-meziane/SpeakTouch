@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import { ShieldCheck, FileText, Gavel } from "lucide-react";
+import Footer from "./components/Footer.jsx";
 
 export default function Terms() {
   return (
@@ -101,6 +102,8 @@ export default function Terms() {
           </a>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

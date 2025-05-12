@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import { ShieldCheck, FileText, Lock } from "lucide-react";
+import Footer from "./components/Footer.jsx";
 
 export default function Privacy() {
   return (
@@ -93,6 +94,8 @@ export default function Privacy() {
           </a>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

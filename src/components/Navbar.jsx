@@ -28,9 +28,6 @@ export default function Navbar() {
           </div>
         </Link>
         <div className="hidden md:flex items-center space-x-6 text-gray-600">
-          <a href="#settings" className="hover:text-indigo-600 transition">
-            Settings
-          </a>
           <a href="#features" className="hover:text-indigo-600 transition">
             Features
           </a>

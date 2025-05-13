@@ -13,7 +13,7 @@ import {
   WifiOff,
 } from "lucide-react";
 import Navbar from "./components/Navbar.jsx";
-import sentencesData from "./assets/sentences.json"; // Import sentences from JSON file
+import sentencesData from "../public/sentences.json";
 
 export default function CommunicationPage() {
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });

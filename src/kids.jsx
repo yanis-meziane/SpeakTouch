@@ -121,9 +121,7 @@ export default function SpeakTouchKids() {
   ];
 
   return (
-    <div
-      className={`min-h-screen bg-gradient-to-b transition-colors duration-300`}
-    >
+    <div className="h-screen lg:overflow-hidden overflow-auto bg-gradient-to-b transition-colors duration-300">
       {/* Navbar */}
       <Navbar />
 
@@ -200,9 +198,6 @@ export default function SpeakTouchKids() {
 
         {/* Testimonial Section */}
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

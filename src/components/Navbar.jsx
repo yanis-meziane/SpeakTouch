@@ -40,7 +40,7 @@ export default function Navbar() {
           <a href="/kids" className="hover:text-indigo-600 transition">
             SpeakTouch Kids
           </a>
-          <a href="#about" className="hover:text-indigo-600 transition">
+          <a href="/aboutus" className="hover:text-indigo-600 transition">
             About Us
           </a>
           <Link

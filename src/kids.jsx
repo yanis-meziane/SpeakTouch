@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   MessageSquare,
   Hand,
@@ -18,21 +18,11 @@ import {
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
-// Mock audio files (in a real app, these would be actual audio paths)
-const audioFiles = {
-  play: "/audio/i-want-to-play.mp3",
-  hungry: "/audio/i-am-hungry.mp3",
-  help: "/audio/i-need-help.mp3",
-  tired: "/audio/i-am-tired.mp3",
-  love: "/audio/i-love-you.mp3",
-  drink: "/audio/drink.mp3",
-  morning: "/audio/good-morning.mp3",
-  night: "/audio/good-night.mp3",
-};
-
 export default function SpeakTouchKids() {
   const [activeGesture, setActiveGesture] = useState(null);
   const [setScrolled] = useState(false);
+  const speechSynthesisRef = useRef(window.speechSynthesis);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,14 +33,37 @@ export default function SpeakTouchKids() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const playSound = (gestureKey) => {
-    // Stop any currently playing sound
-    const audio = new Audio(audioFiles[gestureKey]);
-    audio.play();
+  const speakGesture = (gesture) => {
+    if (speechSynthesisRef.current.speaking) {
+      speechSynthesisRef.current.cancel();
+    }
 
-    // Visual feedback
-    setActiveGesture(gestureKey);
-    setTimeout(() => setActiveGesture(null), 2000);
+    setActiveGesture(gesture.key);
+    setIsSpeaking(true);
+
+    const utterance = new SpeechSynthesisUtterance(gesture.action);
+    utterance.lang = "en-US";
+
+    utterance.onend = () => {
+      setTimeout(() => {
+        setActiveGesture(null);
+        setIsSpeaking(false);
+      }, 500);
+    };
+
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
+    }
+
+    speechSynthesisRef.current.speak(utterance);
+
+    // Fallback in case onend doesn't fire
+    setTimeout(() => {
+      if (isSpeaking) {
+        setActiveGesture(null);
+        setIsSpeaking(false);
+      }
+    }, 5000);
   };
 
   const communicationOptions = [
@@ -122,12 +135,9 @@ export default function SpeakTouchKids() {
 
   return (
     <div className="h-screen lg:overflow-hidden overflow-auto bg-gradient-to-b transition-colors duration-300">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 md:px-6 pt-24 pb-12">
-        {/* Header */}
         <header className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <span className="bg-indigo-100 text-indigo-800 px-4 py-1 rounded-full text-sm font-medium flex items-center">
@@ -145,12 +155,11 @@ export default function SpeakTouchKids() {
           </p>
         </header>
 
-        {/* Communication Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {communicationOptions.map((gesture) => (
             <div
               key={gesture.key}
-              onClick={() => playSound(gesture.key)}
+              onClick={() => speakGesture(gesture)}
               className={`
                 relative group
                 ${gesture.color}
@@ -171,22 +180,18 @@ export default function SpeakTouchKids() {
                 ${activeGesture === gesture.key ? "scale-105 shadow-xl" : ""}
               `}
             >
-              {/* Icon */}
               <div className="h-12 w-12 bg-white/20 rounded-full flex items-center justify-center">
                 {gesture.icon}
               </div>
 
-              {/* Title */}
               <h3 className="text-lg font-semibold text-center">
                 {gesture.name}
               </h3>
 
-              {/* Description */}
               <p className="text-xs text-white/70 text-center">
                 {gesture.description}
               </p>
 
-              {/* Active State */}
               {activeGesture === gesture.key && (
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                   <Volume2 className="h-8 w-8 animate-pulse" />
@@ -195,9 +200,9 @@ export default function SpeakTouchKids() {
             </div>
           ))}
         </div>
-
-        {/* Testimonial Section */}
       </main>
     </div>
   );
 }
+
+

@@ -1,11 +1,9 @@
-
 <p align="center">
   <img src="banner.png" alt="SpeakTouch Banner" width="50%">
 </p>
 
 <h1 align="center">SpeakTouch</h1>
 <p align="center"><i>A gesture-based communication app for nonverbal users.</i></p>
-
 
 **SpeakTouch** is a mobile application designed to facilitate communication for individuals with speech difficulties through simple touch gestures.
 
@@ -17,7 +15,6 @@
 - **Predefined Messages:** Maps specific gestures to predefined messages.
 - **Audio Output:** Integrates Text-to-Speech (TTS) for voice output.
 - **Haptic Feedback:** Provides tactile confirmation for each gesture.
-- **Offline Functionality:** Operates without an internet connection.
 
 ---
 

@@ -113,19 +113,38 @@ app.post('/api/gpt', async (req, res) => {
     });
     
     // Créer le prompt pour GPT
-    const gptPrompt = `
-      You are assisting someone with generating communication suggestions for people with speech difficulties.
-      Given the following information about the person: "${prompt}"
-      
-      I have a list of pre-recorded sentences. Select the 8 most relevant sentences from the list below 
-      that would be most helpful for this person's situation.
-      
-      Return ONLY the IDs of the selected sentences in a JSON array format like this: ["id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8"]
-      
-      Available sentences:
-      ${allSentences.map(s => `ID: ${s.id}, Direction: ${s.direction}, Message: "${s.message}"`).join('\n')}
-    `;
-    
+ const gptPrompt = `
+  You are assisting someone with generating communication suggestions for a person with speech difficulties or communication challenges.
+  
+  Given the following information about the person: "${prompt}"
+  
+  Please create 8 simple, clear, and useful phrases that would help this person communicate their basic needs, feelings, or requests. Each phrase should be concise (under 8 words), easy to understand, and highly relevant to their specific condition or situation.
+  
+  IMPORTANT: Each phrase must be completely different - ensure there are no duplicate phrases or phrases with similar meanings.
+  
+  Divide these phrases evenly among four directional gestures (up, down, left, right) with 2 phrases per direction.
+  
+  Return your response as a JSON array with the following format:
+  [
+    {"id": "ai-1", "direction": "up", "message": "Unique phrase for gesture UP 1"},
+    {"id": "ai-2", "direction": "down", "message": "Unique phrase for gesture DOWN 1"},
+    {"id": "ai-3", "direction": "left", "message": "Unique phrase for gesture LEFT 1"},
+    {"id": "ai-4", "direction": "right", "message": "Unique phrase for gesture RIGHT 1"},
+    {"id": "ai-5", "direction": "up", "message": "Different unique phrase for gesture UP 2"},
+    {"id": "ai-6", "direction": "down", "message": "Different unique phrase for gesture DOWN 2"},
+    {"id": "ai-7", "direction": "left", "message": "Different unique phrase for gesture LEFT 2"},
+    {"id": "ai-8", "direction": "right", "message": "Different unique phrase for gesture RIGHT 2"}
+  ]
+  
+  Focus on creating phrases that are:
+  1. Helpful for their specific condition (e.g., pain relief requests for someone with chronic pain)
+  2. Important for everyday communication and autonomy
+  3. Relevant to emotional needs and personal comfort
+  4. Appropriate for their cognitive level (if mentioned)
+  5. Diverse and covering different communication needs
+  
+  Be empathetic and thoughtful in creating these phrases, as they will be used by someone who relies on this system for basic communication. Make sure each phrase has a distinct meaning and purpose.
+`;
     // Appeler l'API OpenAI
     console.log('Envoi de la requête à OpenAI...');
     const completion = await openai.chat.completions.create({

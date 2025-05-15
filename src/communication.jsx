@@ -34,13 +34,16 @@ export default function CommunicationPage() {
   const [aiSuggestionsPageIndex, setAiSuggestionsPageIndex] = useState(0);
   const [aiSuggestionsTotalPages, setAiSuggestionsTotalPages] = useState(0);
   const [lastGestureDebug, setLastGestureDebug] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const sentencesPerPage = 4;
-  const audioRefs = useRef({});
-
+  const speechSynthesis = useRef(null);
   const isTouchDevice = useRef(false);
 
   useEffect(() => {
+    // Assign window.speechSynthesis to our ref so we can access it throughout the component
+    speechSynthesis.current = window.speechSynthesis;
+
     fetch("/sentences.json")
       .then((response) => response.json())
       .then((data) => {
@@ -54,26 +57,23 @@ export default function CommunicationPage() {
         updateActiveSentences(0, data);
       })
       .catch((error) => console.error("Error loading sentences:", error));
+
+    // Clean up any pending speech synthesis on unmount
+    return () => {
+      if (speechSynthesis.current) {
+        speechSynthesis.current.cancel();
+      }
+    };
   }, []);
 
   useEffect(() => {
     isTouchDevice.current =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-    return () => {
-      Object.values(audioRefs.current).forEach((audio) => {
-        if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-      });
-    };
   }, []);
 
   useEffect(() => {
     if (isOfflineMode && sentencesData.length > 0) {
       updateActiveSentences(currentPageIndex, sentencesData);
-      preloadAudioForPage(currentPageIndex, sentencesData);
     } else if (aiSuggestions) {
       const totalSuggestions = aiSuggestions.organizedSuggestions
         ? aiSuggestions.organizedSuggestions.length
@@ -157,37 +157,6 @@ export default function CommunicationPage() {
     );
 
     setActiveSentences(pageSentences);
-    preloadAudioForAiSuggestions(pageSentences);
-  };
-
-  const preloadAudioForPage = (pageIndex, data = sentencesData) => {
-    if (!data || data.length === 0) return;
-
-    const startIdx = pageIndex * sentencesPerPage;
-    const endIdx = startIdx + sentencesPerPage;
-
-    data.slice(startIdx, endIdx).forEach((sentence) => {
-      if (!audioRefs.current[sentence.id]) {
-        audioRefs.current[sentence.id] = new Audio(
-          `/sounds/${sentence.id}.mp3`
-        );
-
-        audioRefs.current[sentence.id].load();
-      }
-    });
-  };
-
-  const preloadAudioForAiSuggestions = (suggestions) => {
-    if (!suggestions) return;
-
-    suggestions.forEach((sentence) => {
-      if (!audioRefs.current[sentence.id]) {
-        audioRefs.current[sentence.id] = new Audio(
-          `/sounds/${sentence.id}.mp3`
-        );
-        audioRefs.current[sentence.id].load();
-      }
-    });
   };
 
   const handleStart = (clientX, clientY) => {
@@ -217,7 +186,7 @@ export default function CommunicationPage() {
 
         if (rightSentence) {
           console.log("Found RIGHT sentence:", rightSentence);
-          playSound(rightSentence);
+          speakSentence(rightSentence);
         } else {
           console.warn("No sentence found for RIGHT gesture");
         }
@@ -240,7 +209,7 @@ export default function CommunicationPage() {
 
         if (leftSentence) {
           console.log("Found LEFT sentence:", leftSentence);
-          playSound(leftSentence);
+          speakSentence(leftSentence);
         } else {
           console.warn("No sentence found for LEFT gesture");
 
@@ -251,7 +220,7 @@ export default function CommunicationPage() {
               ...activeSentences[0],
               direction: "left",
             };
-            playSound(fallbackSentence);
+            speakSentence(fallbackSentence);
           }
         }
       }
@@ -266,7 +235,7 @@ export default function CommunicationPage() {
 
         if (downSentence) {
           console.log("Found DOWN sentence:", downSentence);
-          playSound(downSentence);
+          speakSentence(downSentence);
         } else {
           console.warn("No sentence found for DOWN gesture");
         }
@@ -278,7 +247,7 @@ export default function CommunicationPage() {
 
         if (upSentence) {
           console.log("Found UP sentence:", upSentence);
-          playSound(upSentence);
+          speakSentence(upSentence);
         } else {
           console.warn("No sentence found for UP gesture");
         }
@@ -288,29 +257,48 @@ export default function CommunicationPage() {
     setIsGesturing(false);
   };
 
-  const playSound = (sentence) => {
-    Object.values(audioRefs.current).forEach((audio) => {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    });
-    if (audioRefs.current[sentence.id]) {
-      audioRefs.current[sentence.id]
-        .play()
-        .catch((e) => console.error("Error playing audio:", e));
+  const speakSentence = (sentence) => {
+    // Cancel any ongoing speech
+    if (speechSynthesis.current) {
+      speechSynthesis.current.cancel();
     }
 
+    // Set feedback UI state
     setCurrentGesture(sentence.direction);
     setFeedback(sentence.message);
+    setIsSpeaking(true);
+
+    // Create a new speech utterance
+    const utterance = new SpeechSynthesisUtterance(sentence.message);
+
+    utterance.lang = "en-US";
+
+    // Handle when speech has completed
+    utterance.onend = () => {
+      console.log("Speech synthesis finished");
+      setTimeout(() => {
+        setFeedback("");
+        setCurrentGesture(null);
+        setIsSpeaking(false);
+      }, 500);
+    };
+
+    // Provide haptic feedback if available
     if (navigator.vibrate) {
       navigator.vibrate(100);
     }
 
+    // Start speaking
+    speechSynthesis.current.speak(utterance);
+
+    // Fallback timeout in case onend doesn't fire
     setTimeout(() => {
-      setFeedback("");
-      setCurrentGesture(null);
-    }, 2000);
+      if (feedback === sentence.message) {
+        setFeedback("");
+        setCurrentGesture(null);
+        setIsSpeaking(false);
+      }
+    }, 5000);
   };
 
   const goToNextPage = () => {
@@ -497,6 +485,7 @@ export default function CommunicationPage() {
 
     setAiSuggestionsPageIndex(0);
   };
+
   const createFallbackSuggestions = () => {
     const directions = ["up", "down", "left", "right"];
     const organizedMock = [];
@@ -552,6 +541,7 @@ export default function CommunicationPage() {
 
     setAiSuggestionsPageIndex(0);
   };
+
   const handleMouseDown = (e) => {
     if (!isTouchDevice.current) {
       handleStart(e.clientX, e.clientY);
@@ -648,7 +638,14 @@ export default function CommunicationPage() {
                   {getGestureIcon()} &nbsp; {feedback}
                 </h2>
                 <div className="mb-4 h-26 flex items-center justify-center">
-                  <Volume2 size={54} className="text-indigo-600" />
+                  <Volume2
+                    size={54}
+                    className={`${
+                      isSpeaking
+                        ? "text-indigo-600 animate-pulse"
+                        : "text-indigo-600"
+                    }`}
+                  />
                 </div>
                 <p className="text-gray-600">Swipe gesture detected</p>
               </div>
@@ -715,7 +712,8 @@ export default function CommunicationPage() {
                     return (
                       <div
                         key={item.id}
-                        className="bg-gray-50 p-4 rounded-xl flex flex-col items-center w-48 shadow-sm hover:shadow-md transition select-none text-center"
+                        className="bg-gray-50 p-4 rounded-xl flex flex-col items-center w-48 shadow-sm hover:shadow-md transition select-none text-center cursor-pointer"
+                        onClick={() => speakSentence(item)}
                       >
                         <div className="p-3 bg-indigo-100 rounded-full mb-3">
                           <IconComponent className="h-6 w-6 text-indigo-600" />
@@ -856,7 +854,8 @@ export default function CommunicationPage() {
                         return (
                           <div
                             key={item.id}
-                            className="bg-gray-50 p-4 rounded-xl flex flex-col items-center w-48 shadow-sm hover:shadow-md transition select-none text-center"
+                            className="bg-gray-50 p-4 rounded-xl flex flex-col items-center w-48 shadow-sm hover:shadow-md transition select-none text-center cursor-pointer"
+                            onClick={() => speakSentence(item)}
                           >
                             <div className="p-3 bg-indigo-100 rounded-full mb-3">
                               <IconComponent className="h-6 w-6 text-indigo-600" />

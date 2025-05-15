@@ -61,5 +61,4 @@ Exemple:
 
 ## Future Enhancements
 
-- AI-powered phrase suggestions.
 - Customizable user interface themes.

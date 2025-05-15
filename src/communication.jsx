@@ -31,27 +31,20 @@ export default function CommunicationPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [sentencesData, setSentencesData] = useState([]);
   const [apiError, setApiError] = useState(null);
-  // State to track current page of AI suggestions
   const [aiSuggestionsPageIndex, setAiSuggestionsPageIndex] = useState(0);
   const [aiSuggestionsTotalPages, setAiSuggestionsTotalPages] = useState(0);
-  // Debug state to track the last detected gesture
   const [lastGestureDebug, setLastGestureDebug] = useState(null);
 
   const sentencesPerPage = 4;
   const audioRefs = useRef({});
 
-  // Detect if device is touch-capable
   const isTouchDevice = useRef(false);
 
-  // Charger les phrases depuis sentences.json
   useEffect(() => {
     fetch("/sentences.json")
       .then((response) => response.json())
       .then((data) => {
-        // Debug: Vérifier la structure et les directions des phrases
         console.log("Phrases chargées:", data.slice(0, 4));
-
-        // Vérifier quelles directions sont présentes
         const directions = data.map((item) => item.direction);
         const uniqueDirections = [...new Set(directions)];
         console.log("Directions disponibles:", uniqueDirections);
@@ -68,7 +61,6 @@ export default function CommunicationPage() {
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
     return () => {
-      // Cleanup audio resources
       Object.values(audioRefs.current).forEach((audio) => {
         if (audio) {
           audio.pause();
@@ -78,13 +70,11 @@ export default function CommunicationPage() {
     };
   }, []);
 
-  // Update active sentences when page changes or AI suggestions arrive
   useEffect(() => {
     if (isOfflineMode && sentencesData.length > 0) {
       updateActiveSentences(currentPageIndex, sentencesData);
       preloadAudioForPage(currentPageIndex, sentencesData);
     } else if (aiSuggestions) {
-      // Calculate total AI suggestions pages when suggestions change
       const totalSuggestions = aiSuggestions.organizedSuggestions
         ? aiSuggestions.organizedSuggestions.length
         : aiSuggestions.length;
@@ -93,25 +83,20 @@ export default function CommunicationPage() {
         Math.ceil(totalSuggestions / sentencesPerPage)
       );
 
-      // Reset to first page when new suggestions arrive
       setAiSuggestionsPageIndex(0);
 
-      // Update active sentences based on current AI suggestions page
       updateActiveAiSuggestions(0);
     }
   }, [currentPageIndex, isOfflineMode, aiSuggestions, sentencesData]);
 
-  // Effect to update active sentences when AI suggestions page changes
   useEffect(() => {
     if (!isOfflineMode && aiSuggestions) {
       updateActiveAiSuggestions(aiSuggestionsPageIndex);
     }
   }, [aiSuggestionsPageIndex]);
 
-  // Si l'API échoue et que nous sommes en mode online, on revient automatiquement au mode offline
   useEffect(() => {
     if (apiError && !isOfflineMode) {
-      // Attendre 5 secondes pour que l'utilisateur puisse lire le message d'erreur
       const timer = setTimeout(() => {
         setIsOfflineMode(true);
         setApiError(null);
@@ -121,11 +106,9 @@ export default function CommunicationPage() {
     }
   }, [apiError, isOfflineMode]);
 
-  // Log activeSentences après chaque mise à jour pour déboguer le problème de direction gauche
   useEffect(() => {
     console.log("Active sentences updated:", activeSentences);
 
-    // Vérifier si une phrase pour la direction gauche existe
     const hasLeftDirection = activeSentences.some(
       (s) => s.direction === "left"
     );
@@ -136,7 +119,6 @@ export default function CommunicationPage() {
     }
   }, [activeSentences]);
 
-  // Update which sentences are active based on the current page
   const updateActiveSentences = (pageIndex, data = sentencesData) => {
     if (!data || data.length === 0) return;
 
@@ -144,7 +126,6 @@ export default function CommunicationPage() {
     const endIdx = startIdx + sentencesPerPage;
     const pageSentences = data.slice(startIdx, endIdx);
 
-    // Debug: vérifier les phrases actives et leurs directions
     console.log(
       `Setting active sentences for page ${pageIndex + 1}:`,
       pageSentences.map((s) => ({ message: s.message, direction: s.direction }))
@@ -153,22 +134,18 @@ export default function CommunicationPage() {
     setActiveSentences(pageSentences);
   };
 
-  // Update active sentences based on AI suggestions page
   const updateActiveAiSuggestions = (pageIndex) => {
     if (!aiSuggestions || !aiSuggestions.organizedSuggestions) return;
 
-    // Obtenir les phrases pour la page actuelle (toujours 4 par page)
     const startIdx = pageIndex * sentencesPerPage;
     const endIdx = startIdx + sentencesPerPage;
 
-    // S'assurer que nous sommes dans les limites
     if (startIdx >= aiSuggestions.organizedSuggestions.length) {
       console.warn("Page index out of bounds, resetting to first page");
       setAiSuggestionsPageIndex(0);
       return;
     }
 
-    // Récupérer exactement 4 phrases pour cette page
     const pageSentences = aiSuggestions.organizedSuggestions.slice(
       startIdx,
       endIdx
@@ -179,11 +156,10 @@ export default function CommunicationPage() {
       pageSentences
     );
 
-    // Définir les phrases actives et précharger l'audio
     setActiveSentences(pageSentences);
     preloadAudioForAiSuggestions(pageSentences);
   };
-  // Preload audio for the current page
+
   const preloadAudioForPage = (pageIndex, data = sentencesData) => {
     if (!data || data.length === 0) return;
 
@@ -195,13 +171,12 @@ export default function CommunicationPage() {
         audioRefs.current[sentence.id] = new Audio(
           `/sounds/${sentence.id}.mp3`
         );
-        // Précharger l'audio pour une meilleure réactivité
+
         audioRefs.current[sentence.id].load();
       }
     });
   };
 
-  // Preload audio for AI suggestions
   const preloadAudioForAiSuggestions = (suggestions) => {
     if (!suggestions) return;
 
@@ -210,7 +185,6 @@ export default function CommunicationPage() {
         audioRefs.current[sentence.id] = new Audio(
           `/sounds/${sentence.id}.mp3`
         );
-        // Préchargement pour optimiser la réactivité
         audioRefs.current[sentence.id].load();
       }
     });
@@ -228,19 +202,15 @@ export default function CommunicationPage() {
     const dx = clientX - startPosition.x;
     const dy = clientY - startPosition.y;
 
-    // Définir un seuil minimal pour la détection d'un geste
     const threshold = 50;
 
-    console.log(`Movement: dx=${dx}, dy=${dy}`); // Debug log
+    console.log(`Movement: dx=${dx}, dy=${dy}`);
 
-    // Determine if the gesture was mostly horizontal or vertical
     if (Math.abs(dx) > Math.abs(dy)) {
-      // Horizontal movement
       if (dx > threshold) {
-        console.log("RIGHT gesture detected"); // Debug log
+        console.log("RIGHT gesture detected");
         setLastGestureDebug("right");
 
-        // Trouver une phrase avec la direction "right"
         const rightSentence = activeSentences.find(
           (s) => s.direction === "right"
         );
@@ -252,10 +222,9 @@ export default function CommunicationPage() {
           console.warn("No sentence found for RIGHT gesture");
         }
       } else if (dx < -threshold) {
-        console.log("LEFT gesture detected"); // Debug log
+        console.log("LEFT gesture detected");
         setLastGestureDebug("left");
 
-        // Log all sentences and their directions
         console.log(
           "Active sentences when LEFT detected:",
           activeSentences.map((s) => ({
@@ -265,7 +234,6 @@ export default function CommunicationPage() {
           }))
         );
 
-        // Trouver une phrase avec la direction "left" en normalisant la casse
         const leftSentence = activeSentences.find(
           (s) => s.direction && s.direction.toLowerCase() === "left"
         );
@@ -276,11 +244,9 @@ export default function CommunicationPage() {
         } else {
           console.warn("No sentence found for LEFT gesture");
 
-          // Fallback: utiliser la première phrase disponible
           if (activeSentences.length > 0) {
             console.log("Using fallback for LEFT gesture");
 
-            // Créer une copie temporaire avec "left" comme direction pour le débogage
             const fallbackSentence = {
               ...activeSentences[0],
               direction: "left",
@@ -290,9 +256,8 @@ export default function CommunicationPage() {
         }
       }
     } else {
-      // Vertical movement
       if (dy > threshold) {
-        console.log("DOWN gesture detected"); // Debug log
+        console.log("DOWN gesture detected");
         setLastGestureDebug("down");
 
         const downSentence = activeSentences.find(
@@ -306,7 +271,7 @@ export default function CommunicationPage() {
           console.warn("No sentence found for DOWN gesture");
         }
       } else if (dy < -threshold) {
-        console.log("UP gesture detected"); // Debug log
+        console.log("UP gesture detected");
         setLastGestureDebug("up");
 
         const upSentence = activeSentences.find((s) => s.direction === "up");
@@ -324,15 +289,12 @@ export default function CommunicationPage() {
   };
 
   const playSound = (sentence) => {
-    // Stop any currently playing sounds
     Object.values(audioRefs.current).forEach((audio) => {
       if (audio) {
         audio.pause();
         audio.currentTime = 0;
       }
     });
-
-    // Play the appropriate sound
     if (audioRefs.current[sentence.id]) {
       audioRefs.current[sentence.id]
         .play()
@@ -341,20 +303,16 @@ export default function CommunicationPage() {
 
     setCurrentGesture(sentence.direction);
     setFeedback(sentence.message);
-
-    // Provide haptic feedback if available
     if (navigator.vibrate) {
       navigator.vibrate(100);
     }
 
-    // Reset feedback after 2 seconds
     setTimeout(() => {
       setFeedback("");
       setCurrentGesture(null);
     }, 2000);
   };
 
-  // Navigation controls for offline mode
   const goToNextPage = () => {
     if (currentPageIndex < totalPages - 1) {
       setCurrentPageIndex(currentPageIndex + 1);
@@ -367,7 +325,6 @@ export default function CommunicationPage() {
     }
   };
 
-  // Navigation controls for AI suggestions
   const goToNextAiPage = () => {
     if (aiSuggestionsPageIndex < aiSuggestionsTotalPages - 1) {
       setAiSuggestionsPageIndex(aiSuggestionsPageIndex + 1);
@@ -380,49 +337,39 @@ export default function CommunicationPage() {
     }
   };
 
-  // Toggle between offline and online mode
   const toggleMode = () => {
     setIsOfflineMode(!isOfflineMode);
-    setApiError(null); // Réinitialiser les erreurs au changement de mode
+    setApiError(null);
 
     if (isOfflineMode) {
-      // Reset AI suggestions when switching to online mode
       setAiSuggestions(null);
       setAiSuggestionsPageIndex(0);
     } else {
-      // Reset to first page when switching to offline mode
       setCurrentPageIndex(0);
       updateActiveSentences(0, sentencesData);
     }
   };
 
-  // Handle API error dismissal
   const dismissError = () => {
     setApiError(null);
     setIsOfflineMode(true);
   };
 
-  // Handle AI form submission
   const handleAiSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setApiError(null);
 
     try {
-      console.log("Envoi de la requête à l'API (/api/gpt)");
-
-      // Utiliser le chemin relatif correct vers votre API dans src
       const response = await fetch("/api/gpt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ prompt: aiPrompt }),
-        // Ajouter un timeout pour éviter d'attendre trop longtemps
         signal: AbortSignal.timeout(10000),
       });
 
-      // Vérifier si la réponse est OK
       if (!response.ok) {
         throw new Error(`API a répondu avec un statut ${response.status}`);
       }
@@ -430,9 +377,7 @@ export default function CommunicationPage() {
       const data = await response.json();
       console.log("Réponse de l'API:", data);
 
-      // Check if the request was successful
       if (data.success) {
-        // SIMPLIFIÉ: Créer exactement 2 pages de 4 phrases
         createExactlyTwoPages(data.sentences);
       } else {
         console.error("Error from GPT API:", data.error);
@@ -440,7 +385,6 @@ export default function CommunicationPage() {
           "Le service IA a renvoyé une erreur. Veuillez réessayer plus tard."
         );
 
-        // Fallback to random suggestions if there's an error
         if (sentencesData.length > 0) {
           createFallbackSuggestions();
         }
@@ -448,7 +392,6 @@ export default function CommunicationPage() {
     } catch (error) {
       console.error("Failed to fetch AI suggestions:", error);
 
-      // Message d'erreur spécifique selon le type d'erreur
       if (error.name === "AbortError") {
         setApiError(
           "La requête a pris trop de temps. L'IA n'est pas accessible pour le moment."
@@ -463,7 +406,6 @@ export default function CommunicationPage() {
         );
       }
 
-      // Fallback to random sentences on error
       if (sentencesData.length > 0) {
         createFallbackSuggestions();
       }
@@ -473,23 +415,17 @@ export default function CommunicationPage() {
   };
 
   const createExactlyTwoPages = (sentences) => {
-    // Directions standard
     const directions = ["up", "down", "left", "right"];
 
-    // S'assurer que toutes les phrases ont une direction valide
     const validatedSentences = sentences.map((sentence, index) => {
-      // Copier la phrase pour ne pas modifier l'original
       const validSentence = { ...sentence };
 
-      // S'assurer que chaque phrase a une direction en minuscules
       if (validSentence.direction) {
         validSentence.direction = validSentence.direction.toLowerCase();
       } else {
-        // Si pas de direction, assigner une direction fixe
         validSentence.direction = directions[index % directions.length];
       }
 
-      // S'assurer que chaque phrase a un ID unique
       if (!validSentence.id) {
         validSentence.id = `ai-${index}`;
       }
@@ -497,12 +433,9 @@ export default function CommunicationPage() {
       return validSentence;
     });
 
-    // Créer exactement 8 phrases (2 pages de 4)
     const organizedSuggestions = [];
 
-    // Créer la première page (4 phrases)
     directions.forEach((direction) => {
-      // Chercher une phrase avec cette direction
       const matchingPhrase = validatedSentences.find(
         (s) =>
           s.direction === direction &&
@@ -510,10 +443,8 @@ export default function CommunicationPage() {
       );
 
       if (matchingPhrase) {
-        // Si on trouve une phrase avec cette direction, l'ajouter
         organizedSuggestions.push({ ...matchingPhrase });
       } else {
-        // Sinon, créer une phrase de substitution avec cette direction
         const template = validatedSentences[0] || {
           message: `Swipe ${direction} message`,
           id: `default-${direction}`,
@@ -527,9 +458,7 @@ export default function CommunicationPage() {
       }
     });
 
-    // Créer la deuxième page (4 phrases supplémentaires)
     directions.forEach((direction) => {
-      // Chercher une autre phrase avec cette direction qui n'est pas déjà utilisée
       const remainingSentences = validatedSentences.filter(
         (s) => !organizedSuggestions.some((o) => o.id === s.id)
       );
@@ -539,10 +468,8 @@ export default function CommunicationPage() {
       );
 
       if (matchingPhrase) {
-        // Si on trouve une phrase avec cette direction, l'ajouter
         organizedSuggestions.push({ ...matchingPhrase });
       } else {
-        // Sinon, créer une phrase de substitution
         const template = remainingSentences[0] ||
           validatedSentences[0] || {
             message: `Alternative ${direction} message`,
@@ -557,37 +484,26 @@ export default function CommunicationPage() {
       }
     });
 
-    // Vérifier que nous avons exactement 8 phrases (2 pages de 4)
     console.log(
       `Created exactly ${organizedSuggestions.length} organized suggestions`
     );
     console.log(`Page 1:`, organizedSuggestions.slice(0, 4));
     console.log(`Page 2:`, organizedSuggestions.slice(4, 8));
 
-    // Stocker les suggestions organisées et définir le nombre total de pages à 2
     setAiSuggestions({
       organizedSuggestions: organizedSuggestions,
     });
     setAiSuggestionsTotalPages(2);
 
-    // Réinitialiser à la première page
     setAiSuggestionsPageIndex(0);
   };
   const createFallbackSuggestions = () => {
-    // Directions standard
     const directions = ["up", "down", "left", "right"];
-
-    // Créer exactement 8 phrases (2 pages de 4) à partir des données existantes
     const organizedMock = [];
-
-    // Sélectionner aléatoirement quelques phrases des données existantes
     const randomSentences = sentencesData
       .sort(() => 0.5 - Math.random())
       .slice(0, Math.min(8, sentencesData.length));
-
-    // Créer la première page (4 phrases)
     directions.forEach((direction, index) => {
-      // Chercher une phrase avec cette direction
       const matchingPhrase = randomSentences.find(
         (s) =>
           s.direction.toLowerCase() === direction &&
@@ -595,10 +511,8 @@ export default function CommunicationPage() {
       );
 
       if (matchingPhrase) {
-        // Si on trouve une phrase avec cette direction, l'ajouter
         organizedMock.push({ ...matchingPhrase });
       } else {
-        // Sinon, créer une phrase de substitution
         const template = randomSentences[index % randomSentences.length];
         organizedMock.push({
           ...template,
@@ -608,9 +522,7 @@ export default function CommunicationPage() {
       }
     });
 
-    // Créer la deuxième page (4 phrases supplémentaires)
     directions.forEach((direction) => {
-      // Chercher une autre phrase avec cette direction
       const remainingSentences = randomSentences.filter(
         (s) => !organizedMock.some((o) => o.id === s.id)
       );
@@ -620,10 +532,8 @@ export default function CommunicationPage() {
       );
 
       if (matchingPhrase) {
-        // Si on trouve une phrase avec cette direction, l'ajouter
         organizedMock.push({ ...matchingPhrase });
       } else {
-        // Sinon, créer une phrase de substitution
         const template = remainingSentences[0] || randomSentences[0];
         organizedMock.push({
           ...template,
@@ -633,19 +543,15 @@ export default function CommunicationPage() {
       }
     });
 
-    // Vérifier que nous avons exactement 8 phrases (2 pages de 4)
     console.log(`Created exactly ${organizedMock.length} fallback suggestions`);
 
-    // Stocker les suggestions organisées et définir le nombre total de pages à 2
     setAiSuggestions({
       organizedSuggestions: organizedMock,
     });
     setAiSuggestionsTotalPages(2);
 
-    // Réinitialiser à la première page
     setAiSuggestionsPageIndex(0);
   };
-  // Mouse event handlers
   const handleMouseDown = (e) => {
     if (!isTouchDevice.current) {
       handleStart(e.clientX, e.clientY);
@@ -658,7 +564,6 @@ export default function CommunicationPage() {
     }
   };
 
-  // Touch event handlers
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
     handleStart(touch.clientX, touch.clientY);
@@ -789,7 +694,6 @@ export default function CommunicationPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-x-10 justify-items-center">
                   {activeSentences.map((item) => {
-                    // Map direction string to the corresponding icon component
                     let IconComponent;
                     switch (item.direction) {
                       case "up":
@@ -830,7 +734,6 @@ export default function CommunicationPage() {
                 </div>
               </div>
             ) : (
-              // Online mode interface
               <div className="bg-white shadow-md rounded-2xl p-8 mx-auto">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4 select-none">
                   AI-Assisted Communication
@@ -932,7 +835,6 @@ export default function CommunicationPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-x-10 justify-items-center">
                       {activeSentences.map((item) => {
-                        // Map direction string to the corresponding icon component
                         let IconComponent;
                         switch (item.direction) {
                           case "up":

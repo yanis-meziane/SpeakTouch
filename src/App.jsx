@@ -129,7 +129,7 @@ export default function App() {
               href="/communication"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
-              Get a demo
+              Start SpeakTouch
             </a>
             <a
               href="#how-it-works"
@@ -362,16 +362,10 @@ export default function App() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="#"
+              href="/communication"
               className="bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
               Get Started Now
-            </a>
-            <a
-              href="#features"
-              className="bg-transparent border border-white hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
-            >
-              Learn More
             </a>
           </div>
         </div>

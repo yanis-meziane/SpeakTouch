@@ -44,10 +44,10 @@ export default function Navbar() {
             About Us
           </a>
           <Link
-            to="/signup"
+            to="/communication"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-full transition flex items-center space-x-1"
           >
-            <span>Sign up</span>
+            <span>Use SpeakTouch</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

@@ -180,7 +180,7 @@ export default function App() {
                     </h3>
                     <div className="space-y-3">
                       {[
-                        "I'm thirsty",
+                        "I'm hungry",
                         "I need to rest",
                         "I'm feeling cold",
                         "Can you help me?",

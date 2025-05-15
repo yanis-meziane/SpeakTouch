@@ -9,8 +9,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Send,
-  Wifi,
-  WifiOff,
   AlertTriangle,
   X,
 } from "lucide-react";

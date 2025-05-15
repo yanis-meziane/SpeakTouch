@@ -1,9 +1,7 @@
 // gpt.js
-// Ce module gère toutes les interactions avec l'API OpenAI pour générer des phrases adaptées
 
 import { OpenAI } from 'openai';
 
-// Fonction pour configurer et retourner une instance d'OpenAI
 const createOpenAIClient = (apiKey) => {
   if (!apiKey) {
     throw new Error('API key is required');
@@ -14,12 +12,10 @@ const createOpenAIClient = (apiKey) => {
   });
 };
 
-// Fonction principale pour générer des phrases adaptées au handicap
 const generateAdaptedPhrases = async (prompt, apiKey) => {
   try {
     const openai = createOpenAIClient(apiKey);
     
-    // Création du prompt pour l'API OpenAI
     const gptPrompt = `
       You are assisting someone with generating communication suggestions tailored specifically for a person with the following condition or disability: "${prompt}"
       
@@ -66,7 +62,6 @@ const generateAdaptedPhrases = async (prompt, apiKey) => {
       Be empathetic and thoughtful in creating these phrases, ensuring they provide genuine assistance with the specific challenges faced by someone with this condition.
     `;
     
-    // Configuration de la requête à l'API
     const response = await openai.chat.completions.create({
       model: "gpt-4-turbo",
       messages: [
@@ -86,40 +81,32 @@ const generateAdaptedPhrases = async (prompt, apiKey) => {
       presence_penalty: 0,
     });
     
-    // Extraction et traitement de la réponse
     const responseText = response.choices[0].message.content.trim();
     console.log('Réponse brute de l\'API OpenAI:', responseText);
     
-    // Extraction du JSON de la réponse
     const match = responseText.match(/\[[\s\S]*\]/);
     if (!match) {
       throw new Error('Impossible de trouver un tableau JSON dans la réponse');
     }
     
-    // Parsing du JSON
     const parsedData = JSON.parse(match[0]);
-    
-    // Validation et normalisation des phrases
+
     return validateAndNormalizePhrases(parsedData);
     
   } catch (error) {
     console.error('Erreur lors de la génération des phrases:', error);
-    // Renvoyer des phrases par défaut en cas d'erreur
     return getFallbackPhrases();
   }
 };
 
-// Fonction pour valider et normaliser les phrases générées
 const validateAndNormalizePhrases = (phrases) => {
   const directions = ["up", "down", "left", "right"];
   
-  // Vérifier si nous avons un tableau
   if (!Array.isArray(phrases)) {
     console.warn('Les données reçues ne sont pas un tableau', phrases);
     return getFallbackPhrases();
   }
-  
-  // Valider chaque phrase
+
   return phrases.map((phrase, index) => {
     // S'assurer que chaque phrase a les propriétés requises
     if (!phrase || typeof phrase !== 'object') {
@@ -131,7 +118,6 @@ const validateAndNormalizePhrases = (phrases) => {
       };
     }
     
-    // Normalisation
     return {
       id: phrase.id || `ai-${index+1}`,
       direction: phrase.direction && directions.includes(phrase.direction.toLowerCase()) 
@@ -142,7 +128,7 @@ const validateAndNormalizePhrases = (phrases) => {
   });
 };
 
-// Phrases par défaut en cas d'erreur
+
 const getFallbackPhrases = () => {
   return [
     {"id": "ai-1", "direction": "up", "message": "Besoin d'aide urgente"},
@@ -156,7 +142,7 @@ const getFallbackPhrases = () => {
   ];
 };
 
-// Exportation des fonctions
+
 export {
   generateAdaptedPhrases,
   validateAndNormalizePhrases,

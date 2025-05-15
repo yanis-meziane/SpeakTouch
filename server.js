@@ -1,5 +1,4 @@
 // server.js
-// Serveur principal qui intègre le module gpt.js
 
 import express from 'express';
 import cors from 'cors';
@@ -8,26 +7,20 @@ import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import fs from 'fs/promises';
 
-// Import du module gpt.js
 import { generateAdaptedPhrases, getFallbackPhrases } from './gpt.js';
 
-// Obtenir le chemin du répertoire actuel (ESM)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Lecture améliorée du fichier .env
 let OPENAI_API_KEY = '';
 try {
   const envContent = readFileSync('.env', 'utf8');
   const lines = envContent.split('\n');
   
   for (const line of lines) {
-    // Recherche spécifiquement la clé API
     if (line.trim().startsWith('VITE_OPENAI_API_KEY=')) {
-      // Extrait tout ce qui suit "VITE_OPENAI_API_KEY="
       const keyValue = line.trim().substring('VITE_OPENAI_API_KEY='.length);
       
-      // Nettoie la clé (enlève guillemets, apostrophes, espaces)
       OPENAI_API_KEY = keyValue.replace(/^["']|["']$/g, '').trim();
       break;
     }
@@ -50,16 +43,13 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Configuration pour servir les fichiers statiques
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware de journalisation
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
 
-// Charger les données des phrases
 const loadSentencesData = async () => {
   try {
     const filePath = path.join(__dirname, 'public', 'sentences.json');
@@ -82,7 +72,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API pour générer des phrases adaptées au handicap
 app.post('/api/gpt', async (req, res) => {
   console.log('POST /api/gpt - Requête reçue');
   try {
@@ -95,7 +84,6 @@ app.post('/api/gpt', async (req, res) => {
     
     console.log(`Prompt reçu: "${prompt.substring(0, 50)}${prompt.length > 50 ? '...' : ''}"`);
     
-    // Vérifier la clé API
     if (!OPENAI_API_KEY) {
       console.error(code);
       return res.status(500).json({ 
@@ -104,7 +92,6 @@ app.post('/api/gpt', async (req, res) => {
       });
     }
     
-    // Utilisation du module gpt.js pour générer les phrases adaptées
     console.log('Génération des phrases adaptées avec le module gpt.js...');
     let generatedSentences;
     
@@ -117,7 +104,6 @@ app.post('/api/gpt', async (req, res) => {
       console.log('Utilisation des phrases par défaut:', generatedSentences.length);
     }
     
-    // Envoyer la réponse au client
     res.status(200).json({
       success: true,
       sentences: generatedSentences
@@ -132,12 +118,10 @@ app.post('/api/gpt', async (req, res) => {
   }
 });
 
-// Route pour servir le fichier index.html pour toutes les autres routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Démarrer le serveur
 app.listen(PORT, () => {
   console.log(`🚀 API server running on http://localhost:${PORT}`);
   console.log('État de la clé API:', OPENAI_API_KEY ? `✅ Configurée (${OPENAI_API_KEY.substring(0, 7)}...)` : '❌ Non configurée');

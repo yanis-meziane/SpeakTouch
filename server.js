@@ -100,7 +100,7 @@ app.post('/api/gpt', async (req, res) => {
     
     // Vérifier la clé API
     if (!OPENAI_API_KEY) {
-      console.error('❌ Clé API OpenAI non définie');
+      console.error(code);
       return res.status(500).json({ 
         error: 'Configuration API incorrecte',
         details: 'La clé API OpenAI n\'est pas configurée correctement'

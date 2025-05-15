@@ -70,7 +70,7 @@ export default function SpeakTouchKids() {
     {
       key: "play",
       icon: <Play className="h-6 w-6" />,
-      name: "Play Time",
+      name: "I want to play",
       action: "I want to play",
       color: "bg-green-500",
       description: "Express your desire to play",
@@ -86,7 +86,7 @@ export default function SpeakTouchKids() {
     {
       key: "help",
       icon: <HelpCircle className="h-6 w-6" />,
-      name: "Need Help",
+      name: "I need help",
       action: "I need help",
       color: "bg-blue-500",
       description: "Ask for assistance",
@@ -111,7 +111,7 @@ export default function SpeakTouchKids() {
       key: "drink",
       icon: <Smile className="h-6 w-6" />,
       name: "I'm Thirsty",
-      action: "I want a drink",
+      action: "I am thirsty",
       color: "bg-teal-500",
       description: "Request something to drink",
     },

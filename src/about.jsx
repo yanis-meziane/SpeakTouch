@@ -187,6 +187,63 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Team Section */}
+      <section className="py-12 bg-gradient-to-b from-indigo-50 to-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-10">
+            <div className="flex justify-center items-center mb-4">
+              <Award className="text-purple-600 mr-2" size={28} />
+              <h2 className="text-3xl font-bold text-gray-900">
+                Meet Our Team
+              </h2>
+            </div>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              The passionate individuals behind SpeakTouch
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                name: "Simon Boisneault",
+                role: "Co-Founder & Developer",
+                initials: "SB",
+                color: "bg-indigo-500",
+              },
+              {
+                name: "Ana Okropiridze",
+                role: "Co-Founder & Developer",
+                initials: "AO",
+                color: "bg-purple-500",
+              },
+            ].map((member, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className={`${member.color} w-20 h-20 rounded-full flex items-center justify-center text-white text-xl font-bold mb-4 shadow-md`}
+                  >
+                    {member.initials}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {member.name}
+                  </h3>
+                  <p className="text-indigo-600 font-medium mb-4">
+                    {member.role}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Committed to creating accessible technology that empowers
+                    communication for everyone
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* GitHub Section */}
       <section className="py-12 bg-indigo-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">

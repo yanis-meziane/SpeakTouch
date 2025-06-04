@@ -126,7 +126,7 @@ export default function App() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="/communication"
+              href="/WelcomPage"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
               Start SpeakTouch
@@ -355,14 +355,14 @@ export default function App() {
       {/* CTA Section */}
       <section id="cta" className="py-20 bg-indigo-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Try SpeakTouch?</h2>
+          <h2 className="text-3xl font-bold mb-6">Ready to Try SpeakTouch ?</h2>
           <p className="text-xl text-indigo-100 max-w-2xl mx-auto mb-10">
             Join thousands of users who have found a new way to express
             themselves. Start communicating more effectively today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="/communication"
+              href="/WelcomPage"
               className="bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-3 px-8 rounded-full transition flex items-center justify-center"
             >
               Get Started Now

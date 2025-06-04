@@ -44,7 +44,7 @@ export default function Navbar() {
             About Us
           </a>
           <Link
-            to="/communication"
+            to="/WelcomPage"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-full transition flex items-center space-x-1"
           >
             <span>Use SpeakTouch</span>

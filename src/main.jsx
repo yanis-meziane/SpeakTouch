@@ -11,6 +11,7 @@ import SpeakTouchKids from "./kids";
 import ResetPassword from "./reset";
 import AboutUs from "./about";
 import "./index.css";
+import WelcomePage from "./WelcomPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/kids" element={<SpeakTouchKids />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/WelcomPage" element={<WelcomePage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

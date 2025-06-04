@@ -27,13 +27,13 @@ try {
   }
   
   if (!OPENAI_API_KEY) {
-    console.error('❌ ATTENTION: Clé API OpenAI non trouvée dans le fichier .env');
+    console.error('❌ ATTENTION: Clé API OpenAI non trouvée dans le fichier');
   } else {
-    console.log(`✅ Clé API OpenAI trouvée dans .env (longueur: ${OPENAI_API_KEY.length})`);
+    console.log(`✅ Clé API OpenAI trouvée dans (longueur: ${OPENAI_API_KEY.length})`);
     console.log(`✅ Début de la clé: ${OPENAI_API_KEY.substring(0, 7)}...`);
   }
 } catch (error) {
-  console.error('❌ Erreur lors de la lecture du fichier .env:', error);
+  console.error('❌ Erreur lors de la lecture du fichier:', error);
 }
 
 const app = express();
